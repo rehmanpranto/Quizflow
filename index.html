@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizFlow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Dieter Rams Inspired - Base Styles */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-color: #f3f4f6; /* Light Gray (e.g., stone-100 or slate-100) */
+            color: #1f2937; /* Dark Gray for text (e.g., slate-800) */
+        }
+        .btn { /* Base button style */
+            transition: background-color 0.2s ease-in-out, box-shadow 0.1s ease-out, transform 0.1s ease-out;
+            border-radius: 0.5rem; /* rounded-lg */
+            padding: 0.875rem 1.5rem; /* py-3.5 px-6 */
+            font-weight: 600; /* semibold */
+            text-align: center;
+        }
+        .btn-primary {
+            background-color: #3b82f6; /* Blue-600 (functional accent) */
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #2563eb; /* Blue-700 */
+        }
+        .btn-secondary {
+            background-color: #e5e7eb; /* Gray-200 */
+            color: #1f2937; /* Gray-800 */
+        }
+        .btn-secondary:hover {
+            background-color: #d1d5db; /* Gray-300 */
+        }
+        .btn:active {
+            transform: scale(0.98);
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.07);
+        }
+        .input-field {
+            border: 1px solid #d1d5db; /* Gray-300 */
+            border-radius: 0.5rem; /* rounded-lg */
+            padding: 0.875rem 1rem; /* py-3.5 px-4 */
+            width: 100%;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #3b82f6; /* Blue-600 */
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); /* Blue focus ring */
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05); /* Softer shadow */
+            padding: 2rem; /* p-8 */
+        }
+        .option-label input[type="radio"]:focus-visible + .option-content {
+            outline: 2px solid #3b82f6; /* Blue-600 */
+            outline-offset: 2px;
+            border-radius: 0.375rem; /* rounded-md */
+        }
+        .option-label input[type="radio"]:checked + .option-content {
+             font-weight: 600;
+             color: #1e40af; /* Blue-800 */
+        }
+        .option-label.selected .option-content {
+            background-color: #eff6ff; /* Blue-50 */
+            border-color: #60a5fa; /* Blue-400 */
+        }
+        .option-content {
+            border: 1px solid #e5e7eb; /* Gray-200 */
+            border-radius: 0.5rem; /* rounded-lg */
+            padding: 1rem; /* p-4 */
+            transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+        }
+        .option-label:hover .option-content {
+            background-color: #f9fafb; /* Gray-50 */
+            border-color: #9ca3af; /* Gray-400 */
+        }
+        /* Custom scrollbar (optional, for Webkit browsers) */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #e5e7eb; border-radius: 3px;}
+        ::-webkit-scrollbar-thumb { background: #9ca3af; border-radius: 3px;}
+        ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+
+        /* Modal Animation */
+        @keyframes modal-pop-in { 0% { transform: translateY(20px) scale(0.98); opacity: 0; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
+        .animate-modal-pop-in { animation: modal-pop-in 0.25s ease-out forwards; }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 selection:bg-blue-500 selection:text-white">
+
+    <div class="container w-full max-w-xl mx-auto">
+
+        <div id="login-section" class="card space-y-6">
+            <div class="text-center mb-6">
+                <svg class="w-16 h-16 mx-auto text-blue-600 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline> </svg>
+                <h1 class="text-3xl font-extrabold text-slate-900">QuizFlow</h1>
+                <p class="text-slate-500 mt-1.5 text-base">Please sign in to begin.</p>
+            </div>
+            <div>
+                <label for="username" class="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wider">Username</label>
+                <input type="text" id="username" placeholder="Enter your username" class="input-field">
+            </div>
+            <div>
+                <label for="password" class="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wider">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" class="input-field">
+            </div>
+            <button onclick="login()" id="login-button" class="w-full btn btn-primary">
+                Login & Start Quiz
+            </button>
+        </div>
+
+        <div id="quiz-section" style="display: none;" class="card">
+            <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-6 pb-4 border-b border-slate-200">
+                <h2 id="quiz-title" class="text-2xl sm:text-3xl font-bold text-slate-900 mb-2 sm:mb-0">Quiz Time!</h2>
+                <div id="timer" class="text-xl font-semibold text-red-600 bg-red-100 px-4 py-1.5 rounded-md self-start sm:self-center">00:00</div>
+            </div>
+            <div class="mb-5 p-3 bg-yellow-50 border border-yellow-300 text-yellow-700 rounded-md text-sm">
+                <div class="flex items-center">
+                    <svg class="h-5 w-5 text-yellow-500 mr-2 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                    </svg>
+                    <p>Stay focused. Navigating away may end the quiz.</p>
+                </div>
+            </div>
+            <div id="question-container" class="space-y-8">
+                </div>
+            <button onclick="submitQuizConfirm()" class="w-full mt-10 btn btn-primary bg-green-600 hover:bg-green-700">
+                Submit Quiz
+            </button>
+        </div>
+
+        <div id="result-section" style="display: none;" class="card text-center space-y-6">
+            <h2 class="text-3xl font-bold text-slate-900">Quiz Result</h2>
+            <div id="result-details" class="bg-slate-50 p-6 rounded-lg border border-slate-200">
+                <p id="username-result" class="text-xl font-semibold text-slate-700 mb-3"></p>
+                <p id="result-score" class="text-4xl font-extrabold text-blue-600 mb-1"></p>
+                <p id="result-percentage" class="text-lg text-slate-500 mb-4"></p>
+                <div id="feedback-message" class="text-base font-medium p-3 rounded-md"></div>
+            </div>
+            <button onclick="restartQuiz()" class="w-full sm:w-auto btn btn-primary">
+                Try Another Quiz
+            </button>
+        </div>
+
+        <div id="message-modal" style="display: none;" class="fixed inset-0 bg-slate-800 bg-opacity-50 backdrop-blur-sm overflow-y-auto h-full w-full flex items-center justify-center z-50 p-4">
+            <div class="bg-white p-7 rounded-lg shadow-xl max-w-md w-full mx-auto transform transition-all duration-300 ease-out scale-95 opacity-0 animate-modal-pop-in">
+                <h3 id="modal-title-element" class="text-xl font-semibold mb-4 text-slate-800">Notification</h3>
+                <div id="modal-message-element" class="text-slate-600 mb-6 text-sm leading-relaxed"></div>
+                <div class="flex justify-end space-x-3">
+                    <button id="modal-cancel-button" style="display:none;" onclick="closeModal()" class="btn btn-secondary text-sm py-2 px-4">
+                        Cancel
+                    </button>
+                    <button id="modal-ok-button" onclick="closeModal()" class="btn btn-primary text-sm py-2 px-4">
+                        OK
+                    </button>
+                    <button id="modal-confirm-button" style="display:none;" class="btn btn-primary bg-red-600 hover:bg-red-700 text-sm py-2 px-4">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let quizData = [];
+        let timeLimit = 120;
+        let timerInterval;
+        let currentUsernameGlobal = "";
+        let quizActive = false;
+        let focusLossCount = 0;
+        const MAX_FOCUS_LOSS = 2;
+
+        // DOM Elements
+        const loginSection = document.getElementById("login-section");
+        const quizSection = document.getElementById("quiz-section");
+        const resultSection = document.getElementById("result-section");
+        const questionContainer = document.getElementById("question-container");
+        const timerDisplay = document.getElementById("timer");
+        const usernameInput = document.getElementById("username");
+        const passwordInput = document.getElementById("password");
+        const loginButton = document.getElementById("login-button");
+        const resultScoreDisplay = document.getElementById("result-score");
+        const resultPercentageDisplay = document.getElementById("result-percentage");
+        const usernameResultDisplay = document.getElementById("username-result");
+        const feedbackMessageDisplay = document.getElementById("feedback-message");
+        const quizTitleDisplay = document.getElementById("quiz-title");
+
+        const messageModal = document.getElementById("message-modal");
+        const modalTitleElement = document.getElementById("modal-title-element");
+        const modalMessageElement = document.getElementById("modal-message-element");
+        const modalOkButton = document.getElementById("modal-ok-button");
+        const modalConfirmButton = document.getElementById("modal-confirm-button");
+        const modalCancelButton = document.getElementById("modal-cancel-button");
+
+        loginSection.style.display = "block";
+
+        function showModal(title, message, type = "alert", onConfirm = null) {
+            modalTitleElement.textContent = title;
+            modalMessageElement.innerHTML = message;
+            messageModal.style.display = "flex";
+            messageModal.firstElementChild.classList.remove('animate-modal-pop-in');
+            void messageModal.firstElementChild.offsetWidth;
+            messageModal.firstElementChild.classList.add('animate-modal-pop-in');
+
+            if (type === "confirm") {
+                modalOkButton.style.display = "none";
+                modalConfirmButton.style.display = "inline-block";
+                modalCancelButton.style.display = "inline-block";
+                modalConfirmButton.onclick = () => { closeModal(); if (onConfirm) onConfirm(); };
+            } else {
+                modalOkButton.style.display = "inline-block";
+                modalConfirmButton.style.display = "none";
+                modalCancelButton.style.display = "none";
+                modalOkButton.onclick = closeModal;
+            }
+        }
+
+        function closeModal() { messageModal.style.display = "none"; }
+
+        function handleVisibilityChange() {
+            if (!quizActive || !document.hidden) return;
+            focusLossCount++;
+            let msg = `Warning ${focusLossCount}/${MAX_FOCUS_LOSS}: You've navigated away from the quiz. <br>Please remain on this tab to avoid quiz termination.`;
+            if (focusLossCount >= MAX_FOCUS_LOSS) {
+                msg += "<br>The quiz will be submitted automatically if you navigate away again or after this warning.";
+                showModal("Final Warning!", msg, "alert", () => { if (focusLossCount > MAX_FOCUS_LOSS && quizActive) submitQuiz(); });
+                if (focusLossCount > MAX_FOCUS_LOSS && quizActive) submitQuiz();
+            } else {
+                showModal("Warning!", msg);
+            }
+        }
+
+        function handleWindowBlur() { if (!quizActive || document.hasFocus()) return; }
+        function setupAntiCheatingListeners() {
+            document.addEventListener("visibilitychange", handleVisibilityChange);
+            window.addEventListener("blur", handleWindowBlur);
+        }
+        function removeAntiCheatingListeners() {
+            document.removeEventListener("visibilitychange", handleVisibilityChange);
+            window.removeEventListener("blur", handleWindowBlur);
+        }
+
+        async function login() {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+            if (!username || !password) {
+                showModal("Input Required", "Please enter both username and password.");
+                return;
+            }
+            loginButton.disabled = true;
+            loginButton.innerHTML = `
+                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Authenticating...`;
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password }),
+                });
+                const result = await response.json();
+                if (response.ok && result.success) {
+                    currentUsernameGlobal = result.username;
+                    loginSection.style.display = "none";
+                    await startQuizFlow();
+                } else if (result.quiz_already_taken) {
+                     showModal("Quiz Attempted", result.message || "You have already taken this quiz.");
+                } else {
+                    showModal("Login Failed", result.message || "Invalid username or password. Please check your credentials.");
+                    passwordInput.value = "";
+                    usernameInput.focus();
+                }
+            } catch (error) {
+                console.error("Login API error:", error);
+                showModal("Login Error", "Could not connect to the login service. Please ensure the server is running and try again later.");
+            } finally {
+                loginButton.disabled = false;
+                loginButton.textContent = "Login & Start Quiz";
+            }
+        }
+
+        async function startQuizFlow() {
+            quizSection.style.display = "block";
+            resultSection.style.display = "none";
+            quizActive = true;
+            focusLossCount = 0;
+            setupAntiCheatingListeners();
+            await fetchQuizData();
+            if (quizData.length > 0) {
+                loadQuiz();
+                startTimer();
+            } else {
+                showModal("Error Loading Quiz", "Could not load quiz data. Please try refreshing the page or contact support if the issue persists.");
+                quizActive = false;
+                removeAntiCheatingListeners();
+                loginSection.style.display = "block";
+                quizSection.style.display = "none";
+            }
+        }
+
+        async function fetchQuizData() {
+            try {
+                const response = await fetch('/api/quiz');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const data = await response.json();
+                quizData = data.questions;
+                timeLimit = data.timeLimit || 120;
+                quizTitleDisplay.textContent = data.title || "Quiz Challenge";
+            } catch (error) {
+                console.error("Fetch quiz data error:", error);
+                showModal("Fetch Error", "Could not retrieve quiz questions. Please check your internet connection.");
+                quizData = [];
+            }
+        }
+
+        function loadQuiz() {
+            questionContainer.innerHTML = "";
+            quizData.forEach((q, i) => {
+                const qDiv = document.createElement("div");
+                // Question card styling - less shadow, more focus on content and border
+                qDiv.className = "question bg-white border border-slate-200 p-6 rounded-lg";
+                const optionsHTML = q.options.map((opt, j) => `
+                    <label class="option-label flex items-center cursor-pointer group" data-question-index="${i}" data-option-index="${j}">
+                        <input type="radio" name="q${i}" value="${j}" class="form-radio h-4 w-4 text-blue-600 focus:ring-blue-500 border-slate-400 shrink-0">
+                        <span class="option-content ml-3 text-slate-700 text-sm group-hover:border-slate-400 flex-grow"> ${opt}
+                        </span>
+                    </label>
+                `).join("");
+
+                qDiv.innerHTML = `
+                    <p class="text-base font-semibold text-slate-800 mb-4">${i + 1}. ${q.question}</p>
+                    <div class="space-y-3"> ${optionsHTML}
+                    </div>`;
+                questionContainer.appendChild(qDiv);
+            });
+
+            document.querySelectorAll('.option-label input[type="radio"]').forEach(radio => {
+                radio.addEventListener('change', (event) => {
+                    document.querySelectorAll(`input[name="${event.target.name}"]`).forEach(r => {
+                        r.closest('.option-label').classList.remove('selected');
+                        // Reset background and border of the content span
+                        r.closest('.option-label').querySelector('.option-content').style.backgroundColor = '';
+                        r.closest('.option-label').querySelector('.option-content').style.borderColor = '';
+
+                    });
+                    if (event.target.checked) {
+                        const parentLabel = event.target.closest('.option-label');
+                        parentLabel.classList.add('selected');
+                         // More explicit styling for selected option's content span
+                        parentLabel.querySelector('.option-content').style.backgroundColor = '#eff6ff'; // blue-50
+                        parentLabel.querySelector('.option-content').style.borderColor = '#60a5fa'; // blue-400
+                    }
+                });
+            });
+        }
+
+
+        function startTimer() {
+            let time = timeLimit;
+            timerDisplay.textContent = formatTime(time);
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (!quizActive) { clearInterval(timerInterval); return; }
+                time--;
+                timerDisplay.textContent = formatTime(time);
+                if (time <= 0) {
+                    clearInterval(timerInterval);
+                    if (quizActive) showModal("Time's Up!", "Your time has expired. Your answers will be submitted automatically.", "alert", submitQuiz);
+                }
+            }, 1000);
+        }
+
+        function formatTime(s) { const m=Math.floor(s/60); const rs=s%60; return `${m.toString().padStart(2, '0')}:${rs.toString().padStart(2, '0')}`; }
+
+        function submitQuizConfirm() { showModal("Confirm Submission", "Are you sure you want to submit your answers? This action cannot be undone.", "confirm", submitQuiz); }
+
+        async function submitQuiz() {
+            if (!quizActive) return;
+            quizActive = false;
+            removeAntiCheatingListeners();
+            clearInterval(timerInterval);
+            const userAnswers = quizData.map((q, i) => {
+                const sel = document.querySelector(`input[name="q${i}"]:checked`);
+                return sel ? parseInt(sel.value) : null;
+            });
+
+            try {
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: currentUsernameGlobal, answers: userAnswers }),
+                });
+                if (!response.ok) {
+                    const errTxt = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}, message: ${errTxt}`);
+                }
+                const result = await response.json();
+                if (result.success) {
+                    displayResults(result.score, result.totalQuestions, result.percentage, result.feedback);
+                } else {
+                    if (result.message && result.message.toLowerCase().includes("already submitted")) {
+                         showModal("Submission Blocked", result.message);
+                    } else {
+                        showModal("Submission Issue", result.message || "There was an issue submitting your quiz. Please try again.");
+                    }
+                    if (!(result.message && result.message.toLowerCase().includes("already submitted"))) {
+                        quizActive = true; setupAntiCheatingListeners();
+                    }
+                }
+            } catch (error) {
+                console.error("Submit quiz error:", error);
+                showModal("Submission Error", `Could not submit answers. ${error.message}. Please ensure the server is running and try again.`);
+                quizActive = true;
+                setupAntiCheatingListeners();
+            }
+        }
+
+        function displayResults(score, totalQuestions, percentage, feedback) {
+            quizSection.style.display = "none";
+            resultSection.style.display = "block";
+            usernameResultDisplay.textContent = `Well done, ${currentUsernameGlobal}!`; // Changed from "Congratulations"
+            resultScoreDisplay.textContent = `${score} / ${totalQuestions}`;
+            resultPercentageDisplay.textContent = `Percentage: ${percentage.toFixed(1)}%`; // Added "Percentage:"
+            const feedbackEl = feedbackMessageDisplay;
+            feedbackEl.textContent = feedback || getGenericFeedback(percentage);
+            feedbackEl.className = 'text-base font-medium p-3 rounded-md'; // Adjusted font size
+            if (percentage >= 80) {
+                feedbackEl.classList.add('bg-green-100', 'text-green-700');
+            } else if (percentage >= 50) {
+                feedbackEl.classList.add('bg-yellow-100', 'text-yellow-700');
+            } else {
+                feedbackEl.classList.add('bg-red-100', 'text-red-700');
+            }
+        }
+
+        function getGenericFeedback(p) {
+            if (p >= 80) return "Excellent work! A strong performance.";
+            if (p >= 60) return "Good effort! You're on the right track.";
+            if (p >= 40) return "Fair attempt. Review the material for improvement.";
+            return "Keep practicing. Learning is a journey!";
+        }
+
+        function restartQuiz() {
+            currentUsernameGlobal = "";
+            usernameInput.value = ""; passwordInput.value = "";
+            quizData = [];
+            clearInterval(timerInterval);
+            quizActive = false; removeAntiCheatingListeners(); focusLossCount = 0;
+            resultSection.style.display = "none";
+            loginSection.style.display = "block";
+        }
+    </script>
+</body>
+</html>
