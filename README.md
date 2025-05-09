@@ -1,4 +1,4 @@
-# 📊 QuizFlow – Market Research Fundamentals Quiz App
+# 📊 QuizFlow
 
 **QuizFlow** is a lightweight, web-based quiz platform built with **Flask** and **Vanilla JS + Tailwind CSS** that tests users on their knowledge of *market research fundamentals*. The app includes user login, quiz timer, scoring, and feedback with basic anti-cheating measures.
 
