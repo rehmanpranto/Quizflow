@@ -1,2 +1,3 @@
 Flask>=2.0.0  # Or a specific version you are using, e.g., Flask==2.3.2
-Flask-CORS>=3.0.0 # Or a specific version, e.g., Flask-CORS==3.0.10
+Flask-CORS>=3.0.0 # Or a particular version, e.g., Flask-CORS==3.0.10
+gunicorn
