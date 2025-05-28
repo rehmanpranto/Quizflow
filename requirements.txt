@@ -1,4 +1,7 @@
-Flask>=2.0.0  # Or a specific version you are using, e.g., Flask==2.3.2
-Flask-CORS>=3.0.0 # Or a particular version, e.g., Flask-CORS==3.0.10
+Flask>=2.0.0
+Flask-CORS>=3.0.0
 gunicorn
 Flask-Mail
+sqlitecloud-python
+Flask-SQLAlchemy
+SQLAlchemy
