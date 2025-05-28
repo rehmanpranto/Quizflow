@@ -12,9 +12,10 @@ app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER', 'smtp.gmail.com')
 app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT', 587))
 app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS', 'true').lower() in ['true', '1', 't']
 app.config['MAIL_USE_SSL'] = os.environ.get('MAIL_USE_SSL', 'false').lower() in ['true', '1', 't']
-app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME', 'rehmanpranto@gmail.com')
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME', 'rehmanpranto@gmail.com') # Replace with your sender email
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD', 'hezp aujt tcxt ezol') # Replace with your App Password
 app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_DEFAULT_SENDER', app.config['MAIL_USERNAME'])
+ADMIN_EMAIL_RECIPIENT = os.environ.get('ADMIN_EMAIL_RECIPIENT', 'rehmanpranto@gmail.com') # Admin email
 
 mail = Mail(app)
 
@@ -41,7 +42,7 @@ quiz_content = {
         {"id": 12, "question": "Which research method would be best for gathering detailed, non-numerical insights?", "options": ["Online surveys with multiple choice questions", "Statistical analysis of sales data", "Open-ended interviews", "Quantitative polling"], "answer": 2},
         {"id": 13, "question": "What is one purpose of market research mentioned in the text?", "options": ["To hire marketing staff", "To assess market size and potential", "To design company logos", "To choose office locations"], "answer": 1},
         {"id": 14, "question": "The 4Ps of marketing must be:", "options": ["Considered independently", "Managed by different departments", "Considered cohesively for effective strategy", "Changed frequently"], "answer": 2},
-        {"id": 15, "question": "Which promotional tool is NOT mentioned in the text?", "options": ["Advertising", "Public relations", "Telemarketing", "Social media marketing"], "answer": 2},
+        {"id": 15, "question": "Which promotional tool is NOT mentioned in the text?", "options": ["Advertising", "Public relations", "Telemarketing", "Social media marketing"], "answer": 2}, # Assuming 'the text' refers to a specific source not provided in quiz, but for quiz logic, this is an answer
         {"id": 16, "question": "An example of qualitative research would be:", "options": ["A survey asking customers to rate satisfaction on a scale of 1-10", "Counting how many people visit a store daily", "Focus groups discussing product preferences", "Analyzing website traffic statistics"], "answer": 2},
         {"id": 17, "question": "What does market research help businesses evaluate regarding competitors?", "options": ["Their employee satisfaction", "Their strengths and weaknesses", "Their office locations", "Their hiring practices"], "answer": 1},
         {"id": 18, "question": "The \"Place\" element is also known as:", "options": ["Promotion", "Distribution", "Positioning", "Pricing"], "answer": 1},
@@ -138,22 +139,41 @@ def submit_quiz():
 
     score = 0
     total_questions = len(quiz_content["questions"])
+    detailed_results = []
+
     for i, question_data in enumerate(quiz_content["questions"]):
         correct_answer_index = question_data["answer"]
+        correct_answer_text = question_data["options"][correct_answer_index]
         user_selected_index = None
-        if i < len(user_answers) and user_answers[i] is not None: # Check if answer exists and is not null
+        user_selected_text = "Not Answered"
+        is_correct_flag = False
+
+        if i < len(user_answers) and user_answers[i] is not None:
             try:
                 user_selected_index = int(user_answers[i])
+                if 0 <= user_selected_index < len(question_data["options"]):
+                    user_selected_text = question_data["options"][user_selected_index]
+                else:
+                    user_selected_text = "Invalid Option Selected" # Should not happen if frontend sends valid indices
             except (ValueError, TypeError):
-                user_selected_index = None # Invalid answer format, treat as incorrect
+                user_selected_text = "Invalid Answer Format" # If frontend sends non-integer
         
         if user_selected_index == correct_answer_index:
             score += 1
+            is_correct_flag = True
+        
+        detailed_results.append({
+            "id": question_data["id"],
+            "question": question_data["question"],
+            "your_answer": user_selected_text,
+            "correct_answer": correct_answer_text,
+            "is_correct": is_correct_flag
+        })
 
     percentage = (score / total_questions) * 100 if total_questions > 0 else 0
     
-    SUBMITTED_QUIZZES.add(user_email) # Mark quiz as submitted for this user
-    print(f"User {user_email} added to submitted list. Current list: {SUBMITTED_QUIZZES}") # For server log
+    SUBMITTED_QUIZZES.add(user_email)
+    print(f"User {user_email} added to submitted list. Current list: {SUBMITTED_QUIZZES}")
 
     feedback_name = user_email.split('@')[0]
     feedback_text = ""
@@ -168,12 +188,34 @@ def submit_quiz():
     else:
         feedback_text = f"Keep learning, {feedback_name}! Market research is a valuable skill."
 
-    print(f"Quiz submitted by: {user_email}, Score: {score}/{total_questions}, Percentage: {percentage:.2f}%") # For server log
+    print(f"Quiz submitted by: {user_email}, Score: {score}/{total_questions}, Percentage: {percentage:.2f}%")
+
+    # --- Prepare Email Content ---
+    detailed_results_text_email = "\n\n--- Detailed Breakdown ---\n"
+    detailed_results_html_email = "<h3>Detailed Breakdown:</h3><ul>"
+
+    for item in detailed_results:
+        status_symbol = "✔" if item['is_correct'] else "✘"
+        detailed_results_text_email += (
+            f"\nQ: {item['question']}\n"
+            f"Your Answer: {item['your_answer']} {status_symbol}\n"
+            f"Correct Answer: {item['correct_answer']}\n"
+        )
+        detailed_results_html_email += (
+            f"<li>"
+            f"<p><strong>Q: {item['question']}</strong></p>"
+            f"<p>Your Answer: {item['your_answer']} <span style='color: {'green' if item['is_correct'] else 'red'}; font-weight: bold;'>{status_symbol}</span></p>"
+            f"<p>Correct Answer: {item['correct_answer']}</p>"
+            f"</li>"
+        )
+    detailed_results_html_email += "</ul>"
 
     # --- Send Email Report ---
-    if app.config.get('MAIL_USERNAME') and app.config.get('MAIL_PASSWORD'): # Only attempt if configured
-        admin_email_recipient = "rehmanpranto@gmail.com" # Consider making this an env variable
-        email_recipients_list = [admin_email_recipient, user_email]
+    if app.config.get('MAIL_USERNAME') and app.config.get('MAIL_PASSWORD'):
+        email_recipients_list = [ADMIN_EMAIL_RECIPIENT]
+        if user_email != ADMIN_EMAIL_RECIPIENT: # Avoid sending two emails if admin takes the quiz
+             email_recipients_list.append(user_email)
+
         email_subject = f"Quiz Results for {user_email} - {quiz_content['title']}"
         email_body_text = f"""
         Hello {feedback_name},
@@ -184,7 +226,7 @@ def submit_quiz():
         Score: {score}/{total_questions}
         Percentage: {percentage:.2f}%
         Feedback: {feedback_text}
-
+        {detailed_results_text_email}
         This report was also sent to the site administrator.
 
         Thank you for participating!
@@ -199,6 +241,7 @@ def submit_quiz():
           <li><strong>Percentage:</strong> {percentage:.2f}%</li>
           <li><strong>Feedback:</strong> {feedback_text}</li>
         </ul>
+        {detailed_results_html_email}
         <p>This report was also sent to the site administrator.</p>
         <p>Thank you for participating!</p>
         </body></html>
@@ -212,10 +255,9 @@ def submit_quiz():
             mail.send(msg)
             print(f"Report email sent successfully to {', '.join(email_recipients_list)}")
         except Exception as e:
-            print(f"Error sending email: {e}") # Log this error
+            print(f"Error sending email: {e}")
     else:
-        print("Email credentials (MAIL_USERNAME or MAIL_PASSWORD) not configured. Skipping email sending for quiz results.")
-
+        print("Email credentials (MAIL_USERNAME or MAIL_PASSWORD) not configured. Skipping email sending.")
 
     return jsonify({
         "success": True,
@@ -223,26 +265,29 @@ def submit_quiz():
         "score": score,
         "totalQuestions": total_questions,
         "percentage": percentage,
-        "feedback": feedback_text
+        "feedback": feedback_text,
+        "detailed_results": detailed_results # New field for detailed results
     })
 
 if __name__ == '__main__':
-    # Startup check for mail credentials
-    if not app.config.get('MAIL_USERNAME') or not app.config.get('MAIL_PASSWORD') or \
-       app.config.get('MAIL_USERNAME') == 'YOUR_SENDER_EMAIL@example.com' or \
-       app.config.get('MAIL_PASSWORD') == 'YOUR_GMAIL_APP_PASSWORD': # Check against generic placeholders too
+    if not app.config.get('MAIL_USERNAME') or \
+       not app.config.get('MAIL_PASSWORD') or \
+       app.config.get('MAIL_USERNAME') == 'rehmanpranto@gmail.com' or \
+       app.config.get('MAIL_PASSWORD') == 'hezp aujt tcxt ezol': # Check against placeholders
         print("\n*********************************************************************")
-        print("WARNING: Email sending might be disabled or use default/missing placeholders.")
+        print("WARNING: Email sending might be disabled or use default/placeholder credentials.")
         print("Please ensure MAIL_USERNAME and MAIL_PASSWORD are correctly set")
         print("(preferably as environment variables) for reliable email functionality.")
-        if app.config.get('MAIL_USERNAME') == 'YOUR_SENDER_EMAIL@example.com' or \
-           app.config.get('MAIL_PASSWORD') == 'YOUR_GMAIL_APP_PASSWORD':
-            print("Default generic placeholder credentials detected.")
+        if app.config.get('MAIL_USERNAME') == 'rehmanpranto@gmail.com' or \
+           app.config.get('MAIL_PASSWORD') == 'hezp aujt tcxt ezol':
+            print("Default placeholder credentials detected. Emails will go to/from these if not changed.")
         elif not app.config.get('MAIL_USERNAME') or not app.config.get('MAIL_PASSWORD'):
             print("MAIL_USERNAME or MAIL_PASSWORD seems to be missing or empty.")
         print(f"Currently configured MAIL_USERNAME for startup check: {app.config.get('MAIL_USERNAME')}")
         print("*********************************************************************\n")
     else:
-        print("Email credentials appear to be configured.")
+        print("Email credentials appear to be configured correctly.")
 
+    # Make ADMIN_EMAIL_RECIPIENT configurable via environment variable too
+    print(f"Admin email for reports: {ADMIN_EMAIL_RECIPIENT}")
     app.run(debug=True, port=5001)
