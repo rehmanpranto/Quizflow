@@ -4,3 +4,4 @@ gunicorn
 Flask-Mail>=0.9.1
 werkzeug>=2.0.0
 python-dotenv
+psycopg2-binary
