@@ -29,15 +29,6 @@ Dive into an interactive experience built with a powerful **Flask (Python) backe
     * **And more:** `python-dotenv`, Flask-CORS, Flask-Mail, Werkzeug.
 
 ---
-
-## 🖼️ Sneak Peek (Imagine Awesome Screenshots/GIFs Here!)
-
-* *(Placeholder: ![alt text](<photos\Screenshot 2025-05-25 at 23-17-13 QuizFlow.png>))*
-* *(Placeholder: ![alt text](<photos\Screenshot 2025-05-25 at 23-18-14 QuizFlow.png>))*
-* *(Placeholder: ![alt text](<photos\Screenshot 2025-05-25 at 23-18-44 QuizFlow.png>))*
-* *(Placeholder:![alt text](<photos\Screenshot 2025-05-25 at 23-19-03 QuizFlow.png>))*
-* *(Placeholder: ![alt text](<photos\Screenshot 2025-05-25 at 23-19-12 QuizFlow.png>))*
-
 ---
 
 ## 🗂️ Project Structure
