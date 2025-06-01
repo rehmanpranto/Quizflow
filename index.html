@@ -13,8 +13,16 @@
             font-family: 'Roboto', sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            background-color: #f3f4f6;
+            /* background-color: #f3f4f6; */ /* Original background color, commented out or overridden by image */
             color: #1f2937;
+
+            /* --- ADDED FOR BACKGROUND --- */
+            background-image: url('unnamed.png'); /* <-- IMPORTANT: REPLACE THIS URL */
+            background-size: cover; /* Cover the entire viewport */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            background-position: center center; /* Center the image */
+            background-attachment: fixed; /* Make the background fixed during scroll */
+            /* --- END OF ADDED BACKGROUND --- */
         }
         h1, h2, h3, h4, h5, h6, .font-playfair {
             font-family: 'Playfair Display', serif;
@@ -23,509 +31,710 @@
         .btn {
             font-family: 'Roboto', sans-serif;
             transition: background-color 0.2s ease-in-out, box-shadow 0.1s ease-out, transform 0.1s ease-out;
-            border-radius: 0.5rem;
-            padding: 0.875rem 1.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem; /* 6px */
             font-weight: 500;
             text-align: center;
             cursor: pointer;
-            letter-spacing: 0.025em;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px 0 rgba(0,0,0,0.06);
         }
-        .btn-primary { background-color: #3b82f6; color: white; }
-        .btn-primary:hover:not(:disabled) { background-color: #2563eb; }
-        .btn-primary:disabled { background-color: #9ca3af; cursor: not-allowed; }
-        .btn-secondary { background-color: #e5e7eb; color: #1f2937; }
-        .btn-secondary:hover { background-color: #d1d5db; }
-        .btn:active:not(:disabled) { transform: scale(0.98); box-shadow: inset 0 1px 2px rgba(0,0,0,0.07); }
-        .input-field {
-            font-family: 'Roboto', sans-serif;
-            border: 1px solid #d1d5db;
-            border-radius: 0.5rem;
-            padding: 0.875rem 1rem;
+        .btn-primary {
+            background-color: #4f46e5; /* Indigo-600 */
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #4338ca; /* Indigo-700 */
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background-color: #e5e7eb; /* Gray-200 */
+            color: #1f2937; /* Gray-800 */
+        }
+        .btn-secondary:hover {
+            background-color: #d1d5db; /* Gray-300 */
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            transform: translateY(-1px);
+        }
+        .form-input {
+            border: 1px solid #d1d5db; /* Gray-300 */
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem; /* 6px */
             width: 100%;
             transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
-        .input-field:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); }
-        .card { background-color: white; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05); padding: 2rem; }
-        .option-label input[type="radio"]:focus-visible + .option-content { outline: 2px solid #3b82f6; outline-offset: 2px; border-radius: 0.375rem; }
-        .option-label input[type="radio"]:checked + .option-content { font-weight: 500; color: #1e40af; }
-        .option-label.selected .option-content { background-color: #eff6ff; border-color: #60a5fa; }
-        .option-content { font-family: 'Roboto', sans-serif; border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 1rem; transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out; }
-        .option-label:hover .option-content { background-color: #f9fafb; border-color: #9ca3af; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #e5e7eb; border-radius: 3px;}
-        ::-webkit-scrollbar-thumb { background: #9ca3af; border-radius: 3px;}
-        ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
-        @keyframes modal-pop-in { 0% { transform: translateY(20px) scale(0.98); opacity: 0; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
-        .animate-modal-pop-in { animation: modal-pop-in 0.25s ease-out forwards; }
-        .auth-toggle-link { font-family: 'Roboto', sans-serif; color: #3b82f6; font-weight: 500; cursor: pointer; }
-        .auth-toggle-link:hover { text-decoration: underline; color: #2563eb; }
-        #progress-bar-fill { transition: width 0.3s ease-in-out; }
-        .text-3xl.font-extrabold, .text-2xl.font-bold, .text-3xl.font-bold, .text-xl.font-semibold { font-family: 'Playfair Display', serif; }
-        #result-section h2.font-bold { font-family: 'Playfair Display', serif; font-weight: 700; }
-        .btn-sm { padding: 0.5rem 1rem; font-size: 0.875rem; }
+        .form-input:focus {
+            border-color: #4f46e5; /* Indigo-600 */
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+            outline: none;
+        }
+        .container {
+            max-width: 900px; /* Increased max-width for better layout */
+            margin-left: auto;
+            margin-right: auto;
+            padding: 2rem;
+        }
+        .card {
+            background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white background for readability on dark bg */
+            backdrop-filter: blur(10px); /* Frosted glass effect */
+            -webkit-backdrop-filter: blur(10px); /* Safari */
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+            padding: 2rem;
+            border-radius: 0.75rem; /* 12px */
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+        .card-darker-text p, .card-darker-text li, .card-darker-text div, .card-darker-text span, .card-darker-text label {
+            color: #e5e7eb; /* Lighter text color for dark background, Gray-200 */
+        }
+        .card-darker-text h1, .card-darker-text h2, .card-darker-text h3, .card-darker-text h4, .card-darker-text .font-playfair {
+             color: #f9fafb; /* Even lighter for headings, Gray-50 */
+        }
+        .card-darker-text .form-input {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #e5e7eb;
+        }
+        .card-darker-text .form-input::placeholder {
+            color: #9ca3af; /* Gray-400 for placeholders */
+        }
+        .card-darker-text .btn-secondary {
+            background-color: rgba(229, 231, 235, 0.2); /* Gray-200 with alpha */
+            color: #f3f4f6; /* Gray-100 */
+            border: 1px solid rgba(229, 231, 235, 0.4);
+        }
+        .card-darker-text .btn-secondary:hover {
+            background-color: rgba(209, 213, 219, 0.3); /* Gray-300 with alpha */
+        }
+
+        /* Adjust link colors for better visibility on a dark background */
+        a {
+            color: #818cf8; /* Indigo-400 */
+        }
+        a:hover {
+            color: #a7afff; /* Lighter Indigo */
+        }
+        .text-slate-700 { color: #cbd5e1 !important; } /* Slate-300 for better readability */
+        .text-slate-800 { color: #e2e8f0 !important; } /* Slate-200 */
+        .text-slate-600 { color: #94a3b8 !important; } /* Slate-400 */
+        .text-green-600 { color: #34d399 !important; } /* Green-400 */
+        .text-red-600 { color: #f87171 !important; } /* Red-400 */
+        .text-blue-700 { color: #60a5fa !important; } /* Blue-400 */
+        .text-blue-500 { color: #3b82f6 !important; } /* Blue-500 */
+        .border-slate-300 { border-color: #475569 !important; } /* Slate-600 */
+        .bg-slate-100 { background-color: rgba(51, 65, 85, 0.5) !important; } /* Slate-700 with alpha */
+
+
+        /* Quiz Question Styling Adjustments for Dark Background */
+        #quiz-container .bg-white, #quiz-questions div {
+            background-color: rgba(255, 255, 255, 0.05) !important; /* Slightly transparent white for question cards */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        #quiz-container p, #quiz-container label, #quiz-container div, #quiz-container span {
+            color: #e5e7eb; /* Lighter text, Gray-200 */
+        }
+        #quiz-container .font-medium {
+            color: #f9fafb; /* Even lighter for question text, Gray-50 */
+        }
+
+        /* Submission details card text color adjustments */
+        #submission-detail-view .card p,
+        #submission-detail-view .card span,
+        #submission-detail-view .card li,
+        #submission-detail-view .card div {
+            color: #e5e7eb; /* Gray-200 */
+        }
+        #submission-detail-view .card h3,
+        #submission-detail-view .card .font-semibold {
+             color: #f9fafb; /* Gray-50 */
+        }
+        #submission-detail-view .text-green-700 { color: #34d399 !important; } /* Green-400 */
+        #submission-detail-view .text-red-700 { color: #f87171 !important; } /* Red-400 */
+        #submission-detail-view .text-blue-700 { color: #60a5fa !important; } /* Blue-400 */
+
+
+        /* General visibility improvements for other elements */
+        .text-gray-700 { color: #d1d5db !important; } /* Gray-300 */
+        .text-gray-500 { color: #9ca3af !important; } /* Gray-400 */
+        .text-gray-900 { color: #f9fafb !important; } /* Gray-50 */
+
+
+        #timer {
+            color: #f9fafb; /* Lighter color for timer */
+        }
+
+        /* Ensure modal content is readable */
+        #submission-detail-modal-content {
+            background-color: rgba(30, 41, 59, 0.9) !important; /* Darker slate with alpha */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        #submission-detail-modal-content p,
+        #submission-detail-modal-content span,
+        #submission-detail-modal-content li,
+        #submission-detail-modal-content div,
+        #submission-detail-modal-content h3 {
+            color: #e5e7eb; /* Gray-200 */
+        }
+        #submission-detail-modal-content .font-semibold {
+             color: #f9fafb; /* Gray-50 */
+        }
+        #submission-detail-modal-content .text-green-700 { color: #34d399 !important; }
+        #submission-detail-modal-content .text-red-700 { color: #f87171 !important; }
+        #submission-detail-modal-content .text-blue-700 { color: #60a5fa !important; }
+        #submission-detail-modal-content .bg-slate-50 { background-color: rgba(51, 65, 85, 0.7) !important; } /* Slate-700 with alpha for question items */
+
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4 selection:bg-blue-500 selection:text-white">
+<body class="min-h-screen flex flex-col items-center justify-center pt-8 pb-8">
 
-    <div class="container w-full max-w-xl mx-auto">
+    <div id="app-container" class="container">
+        <header class="text-center mb-10">
+            <h1 class="text-6xl font-playfair mb-2 text-white" style="text-shadow: 2px 2px 8px rgba(0,0,0,0.7);">QuizFlow</h1>
+            <p class="text-xl text-indigo-200" style="text-shadow: 1px 1px 4px rgba(0,0,0,0.5);">Unleash Your Inner Genius!</p>
+        </header>
 
-        <div id="login-section" class="card space-y-6">
-            <div class="text-center mb-6">
-                <svg class="w-16 h-16 mx-auto text-blue-600 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                <h1 class="text-3xl font-extrabold text-slate-900">QuizFlow Login</h1>
-                <p class="text-slate-500 mt-1.5 text-base">Please sign in to begin.</p>
-            </div>
-            <div>
-                <label for="login-email" class="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wider">Email Address</label>
-                <input type="email" id="login-email" placeholder="Enter your email" class="input-field">
-            </div>
-            <div>
-                <label for="login-password" class="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wider">Password</label>
-                <input type="password" id="login-password" placeholder="Enter your password" class="input-field">
-            </div>
-            <button onclick="login()" id="login-button" class="w-full btn btn-primary">Login & Start Quiz</button>
-            <button id="view-past-submissions-btn" style="display:none;" onclick="showPastSubmissionsView()" class="w-full btn btn-secondary mt-3">
-                View My Past Quizzes
-            </button>
-            <p class="text-center text-sm text-slate-600 mt-4">
-                Don't have an account? <span onclick="toggleAuthView('register')" class="auth-toggle-link">Register here</span>
+        <div id="login-view" class="card card-darker-text">
+            <h2 class="text-3xl font-playfair mb-6 text-center">Login</h2>
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label for="login-email" class="block text-sm font-medium">Email</label>
+                    <input type="email" id="login-email" name="email" required class="form-input mt-1">
+                </div>
+                <div>
+                    <label for="login-password" class="block text-sm font-medium">Password</label>
+                    <input type="password" id="login-password" name="password" required class="form-input mt-1">
+                </div>
+                <button type="submit" class="btn btn-primary w-full">Login</button>
+            </form>
+            <p id="login-message" class="mt-4 text-center text-sm"></p>
+            <p class="mt-6 text-center text-sm">
+                Don't have an account? <a href="#" onclick="toggleAuthView('register'); return false;" class="font-medium hover:underline">Register here</a>
             </p>
         </div>
 
-        <div id="register-section" style="display: none;" class="card space-y-6">
-            <div class="text-center mb-6">
-                 <svg class="w-16 h-16 mx-auto text-blue-600 mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="17" y1="11" x2="23" y2="11"></line></svg>
-                <h1 class="text-3xl font-extrabold text-slate-900">Create Account</h1>
-                <p class="text-slate-500 mt-1.5 text-base">Join QuizFlow today!</p>
-            </div>
-            <div><label for="register-email" class="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wider">Email Address</label><input type="email" id="register-email" placeholder="Enter your email" class="input-field"></div>
-            <div><label for="register-password" class="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wider">Password</label><input type="password" id="register-password" placeholder="Choose a password (min. 6 characters)" class="input-field"></div>
-            <div><label for="register-confirm-password" class="block text-xs font-semibold text-slate-600 mb-1.5 uppercase tracking-wider">Confirm Password</label><input type="password" id="register-confirm-password" placeholder="Confirm your password" class="input-field"></div>
-            <button onclick="register()" id="register-button" class="w-full btn btn-primary">Register</button>
-            <p class="text-center text-sm text-slate-600">Already have an account? <span onclick="toggleAuthView('login')" class="auth-toggle-link">Login here</span></p>
-        </div>
-
-        <div id="quiz-section" style="display: none;" class="card">
-            <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-6 pb-4 border-b border-slate-200">
-                <h2 id="quiz-title" class="text-2xl sm:text-3xl font-bold text-slate-900 mb-2 sm:mb-0">Quiz Time!</h2>
-                <div class="flex items-center space-x-2 sm:space-x-4 mt-2 sm:mt-0">
-                    <div id="timer" class="text-lg sm:text-xl font-semibold text-red-600 bg-red-100 px-3 py-1 sm:px-4 sm:py-1.5 rounded-md font-roboto">00:00</div>
-                    <div id="progress-bar-container" class="w-28 sm:w-40">
-                        <div class="text-xs text-slate-500 mb-0.5 text-right font-roboto">Progress: <span id="progress-text">0%</span></div>
-                        <div class="w-full bg-slate-200 rounded-full h-2 sm:h-2.5"><div id="progress-bar-fill" class="bg-blue-600 h-2 sm:h-2.5 rounded-full" style="width: 0%;"></div></div>
-                    </div>
+        <div id="register-view" class="card card-darker-text" style="display: none;">
+            <h2 class="text-3xl font-playfair mb-6 text-center">Create Account</h2>
+            <form id="register-form" class="space-y-6">
+                <div>
+                    <label for="register-username" class="block text-sm font-medium">Username</label>
+                    <input type="text" id="register-username" name="username" required class="form-input mt-1">
                 </div>
-            </div>
-            <div class="mb-5 p-3 bg-yellow-50 border border-yellow-300 text-yellow-700 rounded-md text-sm">
-                <div class="flex items-center"><svg class="h-5 w-5 text-yellow-500 mr-2 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" /></svg><p>Stay focused. Navigating away may end the quiz.</p></div>
-            </div>
-            <div id="question-container" class="space-y-8"></div>
-            <button onclick="submitQuizConfirm()" id="submit-quiz-button" class="w-full mt-10 btn btn-primary bg-green-600 hover:bg-green-700">Submit Quiz</button>
+                <div>
+                    <label for="register-email" class="block text-sm font-medium">Email</label>
+                    <input type="email" id="register-email" name="email" required class="form-input mt-1">
+                </div>
+                <div>
+                    <label for="register-password" class="block text-sm font-medium">Password</label>
+                    <input type="password" id="register-password" name="password" required class="form-input mt-1">
+                </div>
+                <button type="submit" class="btn btn-primary w-full">Register</button>
+            </form>
+            <p id="register-message" class="mt-4 text-center text-sm"></p>
+            <p class="mt-6 text-center text-sm">
+                Already have an account? <a href="#" onclick="toggleAuthView('login'); return false;" class="font-medium hover:underline">Login here</a>
+            </p>
         </div>
 
-        <div id="result-section" style="display: none;" class="card text-center space-y-6">
-            <h2 id="result-section-title" class="text-3xl font-bold text-slate-900">Quiz Result</h2>
-            <div id="result-details" class="bg-slate-50 p-6 rounded-lg border border-slate-200">
-                <p id="user-email-result" class="text-xl font-playfair font-semibold text-slate-700 mb-3"></p>
-                <p id="result-score" class="text-4xl font-playfair font-extrabold text-blue-600 mb-1"></p>
-                <p id="result-percentage" class="text-lg text-slate-500 mb-4"></p>
-                <div id="feedback-message" class="text-base font-medium p-3 rounded-md"></div>
+        <div id="quiz-selection-view" class="card card-darker-text" style="display: none;">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-playfair">Available Quizzes</h2>
+                <button onclick="logoutUser()" class="btn btn-secondary">Logout</button>
             </div>
-            <div id="detailed-quiz-results" class="mt-6 text-left"></div>
-            <div class="flex flex-col sm:flex-row justify-center sm:space-x-3 space-y-3 sm:space-y-0 mt-6">
-                <button onclick="printResults()" id="print-results-button" class="w-full sm:w-auto btn btn-secondary">Print Results</button>
-                <button onclick="logoutAndRestart()" class="w-full sm:w-auto btn btn-primary">Logout</button>
-            </div>
+            <div id="quiz-list" class="space-y-4">
+                </div>
+            <p id="quiz-selection-message" class="mt-4 text-sm"></p>
+            <button onclick="showUserSubmissions()" class="btn btn-primary w-full mt-6">View My Submissions</button>
         </div>
 
-        <div id="past-submissions-section" style="display: none;" class="card space-y-6">
+        <div id="quiz-view" style="display: none;" class="card card-darker-text">
             <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900">My Past Quizzes</h2>
-                <button onclick="showMainLoginOrQuizView()" class="btn btn-secondary text-sm py-2 px-3">Back to Main</button>
+                <h2 id="quiz-title" class="text-3xl font-playfair">Quiz Title</h2>
+                <div id="timer" class="text-2xl font-semibold">00:00</div>
+            </div>
+            <form id="quiz-form">
+                <div id="quiz-questions" class="space-y-6">
+                    </div>
+                <button type="submit" class="btn btn-primary w-full mt-8">Submit Quiz</button>
+            </form>
+            <button onclick="goBackToQuizSelection()" class="btn btn-secondary w-full mt-4">Back to Quizzes</button>
+        </div>
+
+        <div id="submission-result-view" style="display: none;" class="card card-darker-text">
+            <h2 class="text-3xl font-playfair mb-4">Quiz Results</h2>
+            <div id="result-summary" class="mb-6">
+                </div>
+            <div id="detailed-feedback" class="space-y-4">
+                </div>
+            <button onclick="goBackToQuizSelection()" class="btn btn-primary w-full mt-6">Back to Quizzes</button>
+        </div>
+
+        <div id="user-submissions-view" style="display: none;" class="card card-darker-text">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-playfair">My Submissions</h2>
+                <button onclick="goBackToQuizSelection()" class="btn btn-secondary">Back to Quizzes</button>
             </div>
             <div id="submissions-list-container" class="space-y-4">
-                <p id="loading-submissions-message">Loading your submissions...</p>
-            </div>
-        </div>
-
-        <div id="submission-detail-section" style="display: none;" class="card space-y-6">
-            <div class="flex justify-between items-center mb-4">
-                <h2 id="submission-detail-quiz-title" class="text-2xl sm:text-3xl font-bold text-slate-900">Detailed Quiz Result</h2>
-                 <button onclick="showPastSubmissionsView(true)" class="btn btn-secondary text-sm py-2 px-3">Back to List</button>
-            </div>
-            <div id="submission-detail-summary" class="bg-slate-50 p-4 sm:p-6 rounded-lg border border-slate-200 mb-6 text-sm sm:text-base"></div>
-            <h3 class="text-xl sm:text-2xl font-semibold text-slate-800 mt-6 mb-3">Question Breakdown:</h3>
-            <div id="submission-detail-questions" class="space-y-4"></div>
-        </div>
-
-        <div id="message-modal" style="display: none;" class="fixed inset-0 bg-slate-800 bg-opacity-50 backdrop-blur-sm overflow-y-auto h-full w-full flex items-center justify-center z-50 p-4">
-            <div class="bg-white p-7 rounded-lg shadow-xl max-w-md w-full mx-auto transform transition-all duration-300 ease-out scale-95 opacity-0 animate-modal-pop-in">
-                <h3 id="modal-title-element" class="text-xl font-playfair font-semibold mb-4 text-slate-800">Notification</h3>
-                <div id="modal-message-element" class="text-slate-600 mb-6 text-sm leading-relaxed"></div>
-                <div class="flex justify-end space-x-3">
-                    <button id="modal-cancel-button" style="display:none;" onclick="closeModal()" class="btn btn-secondary text-sm py-2 px-4">Cancel</button>
-                    <button id="modal-ok-button" onclick="closeModal()" class="btn btn-primary text-sm py-2 px-4">OK</button>
-                    <button id="modal-confirm-button" style="display:none;" class="btn btn-primary bg-red-600 hover:bg-red-700 text-sm py-2 px-4">Confirm</button>
                 </div>
-            </div>
+            <p id="user-submissions-message" class="mt-4 text-sm"></p>
         </div>
     </div>
 
+    <div id="submission-detail-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4" style="display:none; z-index: 50;">
+        <div id="submission-detail-modal-content" class="bg-slate-800 p-6 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="submission-detail-quiz-title" class="text-2xl font-semibold text-gray-100">Submission Details</h3>
+                <button onclick="closeSubmissionDetailModal()" class="text-gray-300 hover:text-gray-100 text-2xl leading-none">&times;</button>
+            </div>
+            <div id="submission-detail-summary" class="mb-4 text-gray-200">
+                </div>
+            <h4 class="text-xl font-semibold mb-3 text-gray-100">Question Breakdown:</h4>
+            <div id="submission-detail-questions" class="space-y-3">
+                </div>
+        </div>
+    </div>
+
+
     <script>
-        let quizDataStore = [];
-        let quizTimeLimit = 1200;
-        let quizTimerInterval;
-        let currentUserEmailGlobal = "";
-        let currentUserIdGlobal = null; // To store user ID from login
-        let quizActive = false;
-        let userFocusLossCount = 0;
-        const MAX_USER_FOCUS_LOSS = 2;
-        window.latestQuizResultForPrinting = null;
-        let answeredQuestionsCount = 0;
+        const API_URL = 'http://localhost:5000/api'; // Change if your backend is hosted elsewhere
+        let currentQuizTimer = null;
+        let timeRemaining = 0;
 
-        const loginSection = document.getElementById("login-section");
-        const registerSection = document.getElementById("register-section");
-        const quizSection = document.getElementById("quiz-section");
-        const resultSection = document.getElementById("result-section");
-        const pastSubmissionsSection = document.getElementById("past-submissions-section");
-        const submissionDetailSection = document.getElementById("submission-detail-section");
-        
-        const questionContainer = document.getElementById("question-container");
-        const timerDisplay = document.getElementById("timer");
-        const progressBarFill = document.getElementById("progress-bar-fill");
-        const progressText = document.getElementById("progress-text");
+        // --- DOM Elements ---
+        const views = {
+            login: document.getElementById('login-view'),
+            register: document.getElementById('register-view'),
+            quizSelection: document.getElementById('quiz-selection-view'),
+            quiz: document.getElementById('quiz-view'),
+            submissionResult: document.getElementById('submission-result-view'),
+            userSubmissions: document.getElementById('user-submissions-view')
+        };
+        const appContainer = document.getElementById('app-container');
 
-        const loginEmailInput = document.getElementById("login-email");
-        const loginPasswordInput = document.getElementById("login-password");
-        const loginButton = document.getElementById("login-button");
-        const viewPastSubmissionsBtn = document.getElementById("view-past-submissions-btn");
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        const quizListDiv = document.getElementById('quiz-list');
+        const quizForm = document.getElementById('quiz-form');
+        const quizQuestionsDiv = document.getElementById('quiz-questions');
+        const quizTitleEl = document.getElementById('quiz-title');
+        const timerEl = document.getElementById('timer');
+        const resultSummaryDiv = document.getElementById('result-summary');
+        const detailedFeedbackDiv = document.getElementById('detailed-feedback');
+        const submissionsListContainer = document.getElementById('submissions-list-container');
 
-        const registerEmailInput = document.getElementById("register-email");
-        const registerPasswordInput = document.getElementById("register-password");
-        const registerConfirmPasswordInput = document.getElementById("register-confirm-password");
-        const registerButton = document.getElementById("register-button");
+        const loginMessageEl = document.getElementById('login-message');
+        const registerMessageEl = document.getElementById('register-message');
+        const quizSelectionMessageEl = document.getElementById('quiz-selection-message');
+        const userSubmissionsMessageEl = document.getElementById('user-submissions-message');
 
-        const resultScoreDisplay = document.getElementById("result-score");
-        const resultPercentageDisplay = document.getElementById("result-percentage");
-        const userEmailResultDisplay = document.getElementById("user-email-result");
-        const feedbackMessageDisplay = document.getElementById("feedback-message");
-        const quizTitleDisplay = document.getElementById("quiz-title");
-        const resultSectionTitle = document.getElementById("result-section-title");
-        const submitQuizButton = document.getElementById("submit-quiz-button");
 
-        const messageModal = document.getElementById("message-modal");
-        const modalTitleElement = document.getElementById("modal-title-element");
-        const modalMessageElement = document.getElementById("modal-message-element");
-        const modalOkButton = document.getElementById("modal-ok-button");
-        const modalConfirmButton = document.getElementById("modal-confirm-button");
-        const modalCancelButton = document.getElementById("modal-cancel-button");
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            showMainLoginOrQuizView(); // Initial view setup
+        // --- Helper Functions ---
+        function showView(viewName) {
+            Object.values(views).forEach(view => view.style.display = 'none');
+            if (views[viewName]) {
+                views[viewName].style.display = 'block';
+            }
+            // If switching to a view that should be centered, ensure body styles facilitate this.
+            if (['login', 'register'].includes(viewName)) {
+                document.body.classList.add('items-center', 'justify-center');
+                appContainer.classList.remove('container'); // Use full width for auth cards
+                appContainer.classList.add('w-full', 'max-w-md');
+            } else {
+                document.body.classList.remove('justify-center');
+                document.body.classList.add('items-start', 'md:items-center'); // Adjust for longer content
+                appContainer.classList.remove('w-full', 'max-w-md');
+                appContainer.classList.add('container'); // Restore container class for other views
+            }
+        }
+
+
+        function toggleAuthView(viewName) {
+            showView(viewName);
+        }
+
+        function displayMessage(element, message, isError = false) {
+            if (element) {
+                element.textContent = message;
+                element.className = isError ? 'mt-4 text-center text-sm text-red-400' : 'mt-4 text-center text-sm text-green-400';
+            }
+        }
+
+        function startTimer(durationInSeconds) {
+            timeRemaining = durationInSeconds;
+            updateTimerDisplay();
+            if (currentQuizTimer) clearInterval(currentQuizTimer);
+            currentQuizTimer = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                if (timeRemaining <= 0) {
+                    clearInterval(currentQuizTimer);
+                    alert("Time's up! Submitting your quiz.");
+                    submitQuiz(); // Auto-submit
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function stopTimer() {
+            clearInterval(currentQuizTimer);
+            currentQuizTimer = null;
+        }
+
+        function goBackToQuizSelection() {
+            stopTimer();
+            showView('quizSelection');
+            loadQuizzes(); // Refresh quiz list
+        }
+
+        // --- API Calls & Logic ---
+        async function handleAuth(url, formData, messageEl, successView) {
+            messageEl.textContent = '';
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(Object.fromEntries(formData))
+                });
+                const result = await response.json();
+                if (response.ok && result.token) {
+                    localStorage.setItem('quizFlowToken', result.token);
+                    localStorage.setItem('quizFlowUser', JSON.stringify(result.user));
+                    displayMessage(messageEl, result.message || 'Success!', false);
+                    showView(successView);
+                    if (successView === 'quizSelection') loadQuizzes();
+                } else {
+                    displayMessage(messageEl, result.message || 'An error occurred.', true);
+                }
+            } catch (error) {
+                console.error(`Error during auth:`, error);
+                displayMessage(messageEl, `Network error: ${error.message}`, true);
+            }
+        }
+
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleAuth(`${API_URL}/auth/login`, new FormData(loginForm), loginMessageEl, 'quizSelection');
         });
 
-        function hideAllSections() {
-            loginSection.style.display = "none";
-            registerSection.style.display = "none";
-            quizSection.style.display = "none";
-            resultSection.style.display = "none";
-            pastSubmissionsSection.style.display = "none";
-            submissionDetailSection.style.display = "none";
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            handleAuth(`${API_URL}/auth/register`, new FormData(registerForm), registerMessageEl, 'login');
+        });
+
+        function logoutUser() {
+            localStorage.removeItem('quizFlowToken');
+            localStorage.removeItem('quizFlowUser');
+            showView('login');
+            loginMessageEl.textContent = 'You have been logged out.';
+            loginMessageEl.className = 'mt-4 text-center text-sm text-indigo-300';
         }
 
-        function toggleAuthView(view) {
-            hideAllSections();
-            if (view === 'register') {
-                registerSection.style.display = "block";
-                registerEmailInput.focus();
-            } else {
-                loginSection.style.display = "block";
-                loginEmailInput.focus();
-            }
-            viewPastSubmissionsBtn.style.display = currentUserEmailGlobal ? 'block' : 'none';
-        }
-
-        function showModal(title, message, type = "alert", onConfirm = null, onCancel = null) {
-            modalTitleElement.textContent = title;
-            modalMessageElement.innerHTML = message;
-            messageModal.style.display = "flex";
-            const modalContent = messageModal.firstElementChild;
-            modalContent.classList.remove('animate-modal-pop-in');
-            void modalContent.offsetWidth;
-            modalContent.classList.add('animate-modal-pop-in');
-            modalOkButton.style.display = (type === "alert") ? "inline-block" : "none";
-            modalConfirmButton.style.display = (type === "confirm") ? "inline-block" : "none";
-            modalCancelButton.style.display = (type === "confirm") ? "inline-block" : "none";
-            if (type === "confirm") {
-                modalConfirmButton.onclick = () => { closeModal(); if (onConfirm) onConfirm(); };
-                modalCancelButton.onclick = () => { closeModal(); if (onCancel) onCancel(); };
-                modalConfirmButton.focus();
-            } else {
-                modalOkButton.onclick = () => { closeModal(); if (onConfirm) onConfirm(); };
-                modalOkButton.focus();
-            }
-        }
-        function closeModal() { messageModal.style.display = "none"; }
-
-        function handleVisibilityChange() { /* ... (keep existing) ... */ }
-        function setupAntiCheatingListeners() { /* ... (keep existing) ... */ }
-        function removeAntiCheatingListeners() { /* ... (keep existing) ... */ }
-        
-        async function register() { /* ... (keep existing, ensure hideAllSections is used appropriately if needed) ... */ 
-            const email = registerEmailInput.value.trim();
-            const password = registerPasswordInput.value;
-            const confirmPassword = registerConfirmPasswordInput.value;
-
-            if (!email || !password || !confirmPassword) { showModal("Input Required", "Please fill in all registration fields."); return; }
-            if (!/\S+@\S+\.\S+/.test(email)) { showModal("Invalid Email", "Please enter a valid email address."); return; }
-            if (password.length < 6) { showModal("Password Too Short", "Password must be at least 6 characters long."); return; }
-            if (password !== confirmPassword) { showModal("Password Mismatch", "Passwords do not match."); registerConfirmPasswordInput.value = ""; registerConfirmPasswordInput.focus(); return; }
-
-            registerButton.disabled = true; registerButton.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Registering...`;
-            try {
-                const response = await fetch('/api/auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }), });
-                const result = await response.json();
-                if (response.status === 201 && result.success) {
-                    showModal("Registration Successful!", result.message || "You can now log in.", "alert", () => {
-                        toggleAuthView('login'); loginEmailInput.value = email; loginPasswordInput.value = ""; registerEmailInput.value = ""; registerPasswordInput.value = ""; registerConfirmPasswordInput.value = ""; loginPasswordInput.focus();
-                    });
-                } else { showModal("Registration Failed", result.message || "Could not register."); }
-            } catch (error) { console.error("Registration API error:", error); showModal("Registration Error", "Service unavailable. Please try again later.");
-            } finally { registerButton.disabled = false; registerButton.textContent = "Register"; }
-        }
-
-        async function login() {
-            const email = loginEmailInput.value.trim();
-            const password = loginPasswordInput.value;
-            if (!email || !password) { showModal("Input Required", "Please enter both email and password."); return; }
-            loginButton.disabled = true; loginButton.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Authenticating...`;
-
-            try {
-                const response = await fetch('/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }), });
-                const result = await response.json();
-                if (response.ok && result.success) {
-                    currentUserEmailGlobal = result.email;
-                    currentUserIdGlobal = result.user_id; // Store user ID
-                    viewPastSubmissionsBtn.style.display = 'block'; // Show "View My Past Quizzes" button
-
-                    if (result.quiz_already_taken && result.past_results) { // For the default quiz
-                        hideAllSections();
-                        resultSection.style.display = "block";
-                        const past = result.past_results;
-                        window.latestQuizResultForPrinting = { email: currentUserEmailGlobal, score: past.score, totalQuestions: past.totalQuestions, percentage: past.percentage, feedback: past.feedback, title: past.quizTitle || "Quiz Results", detailed_results: [] };
-                        resultSectionTitle.textContent = past.quizTitle || "Previous Quiz Results";
-                        displayResults(past.score, past.totalQuestions, past.percentage, past.feedback, []);
-                        userEmailResultDisplay.textContent = `Welcome back, ${currentUserEmailGlobal.split('@')[0]}! Results for "${past.quizTitle || 'the quiz'}":`;
-                        showModal("Previous Results Loaded", result.message || "Displayed your previous results for this quiz.");
-                    } else {
-                        hideAllSections();
-                        await startQuizFlow();
-                    }
-                } else {
-                    showModal("Login Failed", result.message || "Invalid email or password.");
-                    loginPasswordInput.value = ""; loginPasswordInput.focus();
-                }
-            } catch (error) { console.error("Login API error:", error); showModal("Login Error", "Service unavailable. Please try again later.");
-            } finally { loginButton.disabled = false; loginButton.textContent = "Login & Start Quiz"; }
-        }
-
-        async function startQuizFlow() { /* ... (keep existing, ensure hideAllSections() is called) ... */ 
-            hideAllSections();
-            quizSection.style.display = "block"; resultSection.style.display = "none";
-            submitQuizButton.disabled = false; quizActive = true; userFocusLossCount = 0; answeredQuestionsCount = 0;
-            await fetchQuizData();
-            if (quizDataStore.length > 0) { updateProgress(); loadQuiz(); startTimer(); setupAntiCheatingListeners(); }
-            else { showModal("Error Loading Quiz", "Could not load quiz data."); quizActive = false; removeAntiCheatingListeners(); showMainLoginOrQuizView(); }
-        }
-
-        async function fetchQuizData() { /* ... (keep existing) ... */ 
-            try {
-                const response = await fetch('/api/quiz'); if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                const data = await response.json();
-                quizDataStore = data.questions || []; quizTimeLimit = data.timeLimit || 1200; quizTitleDisplay.textContent = data.title || "Quiz Challenge";
-            } catch (error) { console.error("Fetch quiz data error:", error); showModal("Fetch Error", "Could not retrieve quiz questions."); quizDataStore = []; }
-        }
-        
-        function updateProgress() { /* ... (keep existing) ... */ }
-        function loadQuiz() { /* ... (keep existing, ensure optionsHTML handles Array.isArray(q.options)) ... */ }
-        function startTimer() { /* ... (keep existing) ... */ }
-        function formatTime(s) { /* ... (keep existing) ... */ }
-        function submitQuizConfirm() { /* ... (keep existing) ... */ }
-
-        async function submitQuiz() { /* ... (keep existing, but use hideAllSections() before showing results) ... */ 
-            if (!quizActive) return; 
-            quizActive = false; removeAntiCheatingListeners(); clearInterval(quizTimerInterval);
-            submitQuizButton.disabled = true; submitQuizButton.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Submitting...`;
-            const userAnswers = quizDataStore.map((q, i) => { const sel = document.querySelector(`input[name="q${i}"]:checked`); return sel ? parseInt(sel.value) : null; });
-            try {
-                const response = await fetch('/api/submit', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: currentUserEmailGlobal, answers: userAnswers }), });
-                const result = await response.json();
-                if (!response.ok) throw new Error(result.message || `HTTP error ${response.status}`); // Enhanced error check
-                if (result.success) {
-                    window.latestQuizResultForPrinting = { email: result.email, score: result.score, totalQuestions: result.totalQuestions, percentage: result.percentage, feedback: result.feedback, title: quizTitleDisplay.textContent || "Quiz Results", detailed_results: result.detailed_results || [] };
-                    hideAllSections(); resultSection.style.display = "block";
-                    resultSectionTitle.textContent = quizTitleDisplay.textContent || "Quiz Results";
-                    displayResults(result.score, result.totalQuestions, result.percentage, result.feedback, result.detailed_results);
-                } else { showModal("Submission Failed", result.message || "There was an issue submitting your quiz."); showMainLoginOrQuizView(); }
-            } catch (error) { console.error("Submit quiz error:", error); showModal("Submission Error", `Could not submit answers. ${error.message}.`); /* Consider next step for user */ }
-            finally { submitQuizButton.disabled = false; submitQuizButton.textContent = "Submit Quiz"; }
-        }
-
-        function displayResults(score, totalQuestions, percentage, feedback, detailed_results_list) { /* ... (keep existing, but ensure it uses detailed_results_list) ... */
-            // userEmailResultDisplay text is set by login or by this function if fresh quiz
-            if (!userEmailResultDisplay.textContent.includes("Welcome back") && !userEmailResultDisplay.textContent.includes("Results for")) {
-                 userEmailResultDisplay.textContent = `Well done, ${currentUserEmailGlobal.split('@')[0]}!`;
-            }
-            resultScoreDisplay.textContent = `${score} / ${totalQuestions}`;
-            resultPercentageDisplay.textContent = `Percentage: ${percentage.toFixed(1)}%`;
-            const feedbackEl = feedbackMessageDisplay; feedbackEl.textContent = feedback;
-            feedbackEl.className = 'text-base font-medium p-3 rounded-md'; // Reset classes
-            if (percentage >= 80) feedbackEl.classList.add('bg-green-100', 'text-green-700');
-            else if (percentage >= 50) feedbackEl.classList.add('bg-yellow-100', 'text-yellow-700');
-            else feedbackEl.classList.add('bg-red-100', 'text-red-700');
-
-            const detailedContainer = document.getElementById('detailed-quiz-results');
-            detailedContainer.innerHTML = '<h3 class="text-2xl font-semibold mb-4 text-slate-800 border-b pb-2">Detailed Breakdown:</h3>';
-            const ul = document.createElement('ul'); ul.className = 'space-y-4';
-            if (detailed_results_list && detailed_results_list.length > 0) {
-                detailed_results_list.forEach((item, index) => { /* ... (existing li creation) ... */ 
-                    const li = document.createElement('li'); li.className = 'p-4 rounded-md border border-slate-200';
-                    const symbol = item.is_correct ? '✔' : '✘'; const correctnessClass = item.is_correct ? 'text-green-700' : 'text-red-700'; const answerBgClass = item.is_correct ? 'bg-green-50' : 'bg-red-50';
-                    li.innerHTML = `<p class="font-medium text-slate-700 mb-2">${index + 1}. ${item.question}</p><p class="${answerBgClass} p-3 rounded-md text-sm ${correctnessClass}">Your Answer: ${item.your_answer} <span class="font-bold text-lg ml-1">${symbol}</span></p>${!item.is_correct ? `<p class="bg-blue-50 p-3 rounded-md text-sm text-blue-700 mt-2">Correct Answer: ${item.correct_answer}</p>` : ''}`;
-                    ul.appendChild(li);
-                });
-            } else { ul.innerHTML = '<li>No detailed breakdown available for this summary.</li>'; }
-            detailedContainer.appendChild(ul);
-        }
-        
-        function printResults() { /* ... (keep existing, ensure quizResultData.title is used) ... */ }
-
-        function logoutAndRestart() {
-            currentUserEmailGlobal = ""; currentUserIdGlobal = null;
-            loginEmailInput.value = ""; loginPasswordInput.value = "";
-            registerEmailInput.value = ""; registerPasswordInput.value = ""; registerConfirmPasswordInput.value = "";
-            quizDataStore = []; clearInterval(quizTimerInterval);
-            quizActive = false; removeAntiCheatingListeners(); userFocusLossCount = 0;
-            window.latestQuizResultForPrinting = null; answeredQuestionsCount = 0;
-            if(progressBarFill) progressBarFill.style.width = '0%'; if(progressText) progressText.textContent = '0%';
-            if(viewPastSubmissionsBtn) viewPastSubmissionsBtn.style.display = 'none';
-            userEmailResultDisplay.textContent = ""; resultSectionTitle.textContent = "Quiz Result";
-            hideAllSections();
-            loginSection.style.display = "block";
-            // toggleAuthView('login'); // toggleAuthView will also set loginSection display and focus
-        }
-
-        // --- New Functions for Past Submissions ---
-        function showMainLoginOrQuizView() {
-            hideAllSections();
-            loginSection.style.display = "block";
-            // The "View My Past Quizzes" button visibility is handled by toggleAuthView or login success
-            if (currentUserEmailGlobal) {
-                viewPastSubmissionsBtn.style.display = 'block';
-            } else {
-                viewPastSubmissionsBtn.style.display = 'none';
-            }
-            loginEmailInput.focus();
-        }
-
-        function showPastSubmissionsView(calledFromBackButton = false) {
-            if (!currentUserEmailGlobal) {
-                showModal("Login Required", "Please login to view your past submissions.", "alert", () => {
-                    showMainLoginOrQuizView();
-                });
+        async function loadQuizzes() {
+            const token = localStorage.getItem('quizFlowToken');
+            if (!token) {
+                showView('login');
+                loginMessageEl.textContent = "Your session expired. Please login again.";
+                loginMessageEl.className = 'mt-4 text-center text-sm text-red-400';
                 return;
             }
-            hideAllSections();
-            pastSubmissionsSection.style.display = "block";
-            const listContainer = document.getElementById('submissions-list-container');
-            listContainer.innerHTML = '<p id="loading-submissions-message" class="text-slate-600">Loading your submissions...</p>';
-            fetchUserSubmissions();
+            quizSelectionMessageEl.textContent = 'Loading quizzes...';
+            try {
+                const response = await fetch(`${API_URL}/quizzes`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.status === 401) { // Unauthorized
+                    logoutUser();
+                    return;
+                }
+                const result = await response.json();
+                if (response.ok) {
+                    quizListDiv.innerHTML = ''; // Clear previous list
+                    if (result.quizzes && result.quizzes.length > 0) {
+                        result.quizzes.forEach(quiz => {
+                            const quizCard = `
+                                <div class="p-4 border border-slate-600 rounded-lg shadow hover:shadow-lg transition-shadow bg-slate-700 bg-opacity-50">
+                                    <h3 class="text-xl font-semibold text-indigo-300 mb-2">${quiz.title}</h3>
+                                    <p class="text-sm text-slate-300 mb-1">Category: ${quiz.category || 'General'}</p>
+                                    <p class="text-sm text-slate-300 mb-3">Questions: ${quiz.question_count || 'N/A'}</p>
+                                    <button onclick="startQuiz(${quiz.quiz_id}, ${quiz.time_limit_seconds || 300})" class="btn btn-primary w-full sm:w-auto">Start Quiz</button>
+                                </div>`;
+                            quizListDiv.insertAdjacentHTML('beforeend', quizCard);
+                        });
+                        quizSelectionMessageEl.textContent = '';
+                    } else {
+                        quizSelectionMessageEl.textContent = 'No quizzes available at the moment.';
+                        quizSelectionMessageEl.className = 'mt-4 text-sm text-slate-400';
+                    }
+                } else {
+                    quizSelectionMessageEl.textContent = result.message || 'Failed to load quizzes.';
+                    quizSelectionMessageEl.className = 'mt-4 text-sm text-red-400';
+                }
+            } catch (error) {
+                console.error('Error loading quizzes:', error);
+                quizSelectionMessageEl.textContent = `Network error: ${error.message}`;
+                quizSelectionMessageEl.className = 'mt-4 text-sm text-red-400';
+            }
         }
 
-        async function fetchUserSubmissions() {
-            try {
-                const response = await fetch(`/api/user/submissions?email=${encodeURIComponent(currentUserEmailGlobal)}`);
-                const result = await response.json();
-                const submissionsListContainer = document.getElementById('submissions-list-container');
-                if (!response.ok) throw new Error(result.message || `HTTP error ${response.status}`);
+        async function startQuiz(quizId, timeLimit) {
+            const token = localStorage.getItem('quizFlowToken');
+            if (!token) { logoutUser(); return; }
 
-                if (result.success && result.submissions && result.submissions.length > 0) {
-                    submissionsListContainer.innerHTML = "";
-                    result.submissions.forEach(sub => {
-                        const subDate = new Date(sub.submitted_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-                        const itemDiv = document.createElement('div');
-                        itemDiv.className = "submission-item border p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow bg-white";
-                        itemDiv.innerHTML = `
-                            <h3 class="text-lg sm:text-xl font-semibold text-blue-700 mb-1">${sub.quiz_title}</h3>
-                            <p class="text-sm text-slate-600">Score: <strong>${sub.score} / ${sub.total_questions_in_quiz}</strong> (${sub.percentage.toFixed(1)}%)</p>
-                            <p class="text-xs text-slate-500 mb-3">Taken on: ${subDate}</p>
-                            <button onclick="viewSubmissionDetails(${sub.submission_id})" class="btn btn-primary btn-sm text-xs py-1.5 px-3">View Details</button>
-                        `;
-                        submissionsListContainer.appendChild(itemDiv);
+            try {
+                const response = await fetch(`${API_URL}/quizzes/${quizId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.status === 401) { logoutUser(); return; }
+                const result = await response.json();
+
+                if (response.ok && result.quiz) {
+                    const quiz = result.quiz;
+                    quizTitleEl.textContent = quiz.title;
+                    quizQuestionsDiv.innerHTML = ''; // Clear previous questions
+                    quiz.questions.forEach((q, index) => {
+                        let optionsHTML = '';
+                        if (q.options && q.options.length > 0) {
+                           optionsHTML = q.options.map(opt => `
+                                <label class="block p-3 rounded-md border border-slate-600 hover:bg-slate-700 cursor-pointer transition-colors">
+                                    <input type="radio" name="question_${q.question_id}" value="${opt.option_id}" required class="mr-3 accent-indigo-500">
+                                    ${opt.option_text}
+                                </label>
+                            `).join('');
+                        } else { // Fallback for potential True/False or other types if options are empty
+                            optionsHTML = `
+                                <label class="block p-3 rounded-md border border-slate-600 hover:bg-slate-700 cursor-pointer transition-colors">
+                                    <input type="radio" name="question_${q.question_id}" value="true" required class="mr-3 accent-indigo-500"> True
+                                </label>
+                                <label class="block p-3 rounded-md border border-slate-600 hover:bg-slate-700 cursor-pointer transition-colors">
+                                    <input type="radio" name="question_${q.question_id}" value="false" class="mr-3 accent-indigo-500"> False
+                                </label>`;
+                        }
+
+                        const questionElement = `
+                            <div class="p-4 rounded-lg shadow bg-slate-700 bg-opacity-70" data-question-id="${q.question_id}">
+                                <p class="font-medium text-slate-200 mb-3">${index + 1}. ${q.question_text}</p>
+                                <div class="space-y-2">${optionsHTML}</div>
+                            </div>`;
+                        quizQuestionsDiv.insertAdjacentHTML('beforeend', questionElement);
                     });
-                } else if (result.success && result.submissions && result.submissions.length === 0) {
-                    submissionsListContainer.innerHTML = "<p class='text-slate-600'>You haven't submitted any quizzes yet.</p>";
+                    quizForm.dataset.quizId = quizId;
+                    showView('quiz');
+                    startTimer(timeLimit);
                 } else {
-                    submissionsListContainer.innerHTML = `<p class='text-red-600'>Could not load submissions: ${result.message || "Unknown error"}</p>`;
+                    quizSelectionMessageEl.textContent = result.message || "Could not load quiz details.";
+                    quizSelectionMessageEl.className = 'mt-4 text-sm text-red-400';
+                }
+            } catch (error) {
+                console.error('Error starting quiz:', error);
+                 quizSelectionMessageEl.textContent = `Network error: ${error.message}`;
+                 quizSelectionMessageEl.className = 'mt-4 text-sm text-red-400';
+            }
+        }
+
+        quizForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            stopTimer();
+            submitQuiz();
+        });
+
+        async function submitQuiz() {
+            const token = localStorage.getItem('quizFlowToken');
+            if (!token) { logoutUser(); return; }
+
+            const quizId = quizForm.dataset.quizId;
+            const answers = [];
+            const formData = new FormData(quizForm);
+
+            // Group answers by question_id
+            const answersByQuestion = {};
+            for (let [key, value] of formData.entries()) {
+                if (key.startsWith('question_')) {
+                    const questionId = key.split('_')[1];
+                    answersByQuestion[questionId] = value; // Assuming radio buttons, so one value per question
+                }
+            }
+
+            // Format for backend
+            Object.keys(answersByQuestion).forEach(questionId => {
+                answers.push({
+                    question_id: parseInt(questionId),
+                    selected_option_id: parseInt(answersByQuestion[questionId])
+                });
+            });
+
+
+            try {
+                const response = await fetch(`${API_URL}/quizzes/${quizId}/submit`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ answers: answers })
+                });
+                if (response.status === 401) { logoutUser(); return; }
+                const result = await response.json();
+
+                if (response.ok) {
+                    displaySubmissionResult(result.submission);
+                    showView('submissionResult');
+                } else {
+                    resultSummaryDiv.innerHTML = `<p class="text-red-400">Error submitting quiz: ${result.message || 'Unknown error'}</p>`;
+                    detailedFeedbackDiv.innerHTML = '';
+                    showView('submissionResult'); // Still show result view but with error
+                }
+            } catch (error) {
+                console.error('Error submitting quiz:', error);
+                resultSummaryDiv.innerHTML = `<p class="text-red-400">Network error: ${error.message}</p>`;
+                detailedFeedbackDiv.innerHTML = '';
+                showView('submissionResult');
+            }
+        }
+
+        function displaySubmissionResult(submission) {
+            resultSummaryDiv.innerHTML = `
+                <p class="text-xl mb-2">Quiz: <span class="font-semibold text-indigo-300">${submission.quiz_title || 'N/A'}</span></p>
+                <p class="text-2xl font-bold mb-1">Your Score: <span class="${submission.score >= 70 ? 'text-green-400' : 'text-red-400'}">${submission.score}%</span> (${submission.correct_answers} out of ${submission.total_questions})</p>
+                <p class="text-slate-300 mb-4">Submitted on: ${new Date(submission.submitted_at).toLocaleString()}</p>
+                <p class="text-lg">${submission.feedback || 'Well done!'}</p>
+            `;
+
+            detailedFeedbackDiv.innerHTML = '<h3 class="text-xl font-semibold mt-6 mb-3 text-slate-100">Detailed Feedback:</h3>';
+            if (submission.questions && submission.questions.length > 0) {
+                submission.questions.forEach((q, index) => {
+                    const correctnessClass = q.is_correct ? 'text-green-400' : 'text-red-400';
+                    const correctnessText = q.is_correct ? 'Correct' : 'Incorrect';
+                    let answerHTML = `<span class="${correctnessClass} font-semibold">${correctnessText}</span>. Your answer: ${q.selected_answer_text || 'Not answered'}.`;
+                    if (!q.is_correct) {
+                        answerHTML += `<br><span class="text-blue-400">Correct Answer: ${q.correct_answer_text}</span>`;
+                    }
+                     if (q.explanation) {
+                        answerHTML += `<br><em class="text-sm text-slate-400">Explanation: ${q.explanation}</em>`;
+                    }
+
+                    const questionDiv = `
+                        <div class="p-3 border border-slate-600 rounded-md bg-slate-700 bg-opacity-50">
+                            <p class="font-medium text-slate-200 mb-1">${index + 1}. ${q.question_text}</p>
+                            <p class="text-sm text-slate-300">${answerHTML}</p>
+                        </div>`;
+                    detailedFeedbackDiv.insertAdjacentHTML('beforeend', questionDiv);
+                });
+            } else {
+                detailedFeedbackDiv.insertAdjacentHTML('beforeend', '<p class="text-slate-400">No detailed feedback available for this submission.</p>');
+            }
+        }
+
+        async function showUserSubmissions() {
+            const token = localStorage.getItem('quizFlowToken');
+            if (!token) { logoutUser(); return; }
+
+            showView('userSubmissions');
+            userSubmissionsMessageEl.textContent = "Loading your submissions...";
+            submissionsListContainer.innerHTML = ""; // Clear previous
+
+            try {
+                const response = await fetch(`${API_URL}/users/me/submissions`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.status === 401) { logoutUser(); return; }
+                const result = await response.json();
+
+                if (response.ok && result.submissions) {
+                    if (result.submissions.length > 0) {
+                        result.submissions.forEach(sub => {
+                            const submissionItem = `
+                                <div class="p-4 border border-slate-600 rounded-lg shadow bg-slate-700 bg-opacity-50">
+                                    <h3 class="text-lg font-semibold text-indigo-300">${sub.quiz_title}</h3>
+                                    <p class="text-sm text-slate-300">Score: ${sub.score}% (${sub.correct_answers}/${sub.total_questions})</p>
+                                    <p class="text-xs text-slate-400 mb-2">Date: ${new Date(sub.submitted_at).toLocaleString()}</p>
+                                    <button onclick="viewSubmissionDetail(${sub.submission_id})" class="btn btn-sm btn-primary text-xs py-1 px-2">View Details</button>
+                                </div>`;
+                            submissionsListContainer.insertAdjacentHTML('beforeend', submissionItem);
+                        });
+                        userSubmissionsMessageEl.textContent = "";
+                    } else {
+                        userSubmissionsMessageEl.textContent = "You haven't submitted any quizzes yet.";
+                        userSubmissionsMessageEl.className = 'mt-4 text-sm text-slate-400';
+                    }
+                } else {
+                    userSubmissionsMessageEl.textContent = result.message || "Could not load submissions.";
+                    userSubmissionsMessageEl.className = 'mt-4 text-sm text-red-400';
                 }
             } catch (error) {
                 console.error("Error fetching user submissions:", error);
-                document.getElementById('submissions-list-container').innerHTML = `<p class='text-red-600'>Error: ${error.message}</p>`;
+                userSubmissionsMessageEl.textContent = `Network error: ${error.message}`;
+                userSubmissionsMessageEl.className = 'mt-4 text-sm text-red-400';
             }
         }
 
-        async function viewSubmissionDetails(submissionId) {
-            hideAllSections();
-            submissionDetailSection.style.display = "block";
-            document.getElementById('submission-detail-quiz-title').textContent = "Loading Details...";
-            document.getElementById('submission-detail-summary').innerHTML = "<p class='text-slate-600'>Loading summary...</p>";
-            document.getElementById('submission-detail-questions').innerHTML = "<p class='text-slate-600'>Loading questions...</p>";
+        function closeSubmissionDetailModal() {
+            document.getElementById('submission-detail-modal').style.display = 'none';
+        }
+
+        async function viewSubmissionDetail(submissionId) {
+            const token = localStorage.getItem('quizFlowToken');
+            if (!token) { logoutUser(); return; }
+
+            document.getElementById('submission-detail-quiz-title').textContent = "Loading...";
+            document.getElementById('submission-detail-summary').innerHTML = "";
+            document.getElementById('submission-detail-questions').innerHTML = "";
+            document.getElementById('submission-detail-modal').style.display = 'flex';
 
             try {
-                const response = await fetch(`/api/submission/${submissionId}/details`);
+                const response = await fetch(`${API_URL}/submissions/${submissionId}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (response.status === 401) { logoutUser(); closeSubmissionDetailModal(); return; }
                 const result = await response.json();
-                 if (!response.ok) throw new Error(result.message || `HTTP error ${response.status}`);
 
-                if (result.success) {
-                    const summary = result.summary;
-                    const details = result.details;
-                    document.getElementById('submission-detail-quiz-title').textContent = summary.quiz_title || "Detailed Quiz Result";
-                    const summaryContainer = document.getElementById('submission-detail-summary');
-                    const submissionDate = new Date(summary.submitted_at).toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-                    summaryContainer.innerHTML = `
-                        <p><strong>User:</strong> ${summary.user_email}</p>
-                        <p><strong>Score:</strong> ${summary.score} / ${summary.total_questions_in_quiz} (${summary.percentage.toFixed(1)}%)</p>
-                        <p><strong>Feedback:</strong> ${summary.feedback_text || "N/A"}</p>
-                        <p><strong>Submitted:</strong> ${submissionDate}</p>
+                if (response.ok && result.submission) {
+                    const sub = result.submission;
+                    document.getElementById('submission-detail-quiz-title').textContent = sub.quiz_title || "Submission Details";
+                    document.getElementById('submission-detail-summary').innerHTML = `
+                        <p>Score: <span class="font-semibold ${sub.score >= 70 ? 'text-green-400' : 'text-red-400'}">${sub.score}%</span> (${sub.correct_answers} / ${sub.total_questions} correct)</p>
+                        <p>Date: ${new Date(sub.submitted_at).toLocaleString()}</p>
+                        ${sub.feedback ? `<p class="mt-2"><em>${sub.feedback}</em></p>` : ''}
                     `;
                     const questionsContainer = document.getElementById('submission-detail-questions');
-                    questionsContainer.innerHTML = "";
-                    if (details && details.length > 0) {
-                        details.forEach((q, index) => {
+                    questionsContainer.innerHTML = ""; // Clear previous
+                    if (sub.questions && sub.questions.length > 0) {
+                        sub.questions.forEach((q, index) => {
                             const qDiv = document.createElement('div');
-                            qDiv.className = `detailed-question p-4 rounded-md border ${q.is_correct ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`;
-                            let answerHTML = `<p class="text-sm your-answer ${q.is_correct ? 'text-green-700' : 'text-red-700 font-semibold'}">Your Answer: ${q.user_selected_answer_text}`;
-                            answerHTML += ` <span class="${q.is_correct ? 'text-green-600' : 'text-red-600'} font-bold">${q.is_correct ? '✔ Correct' : '✘ Incorrect'}</span></p>`;
+                            qDiv.className = `p-3 rounded-md border ${q.is_correct ? 'border-green-600' : 'border-red-600'} bg-slate-700 mb-2`;
+                            let answerHTML = `<p class="text-sm">Your answer: <span class="font-semibold ${q.is_correct ? 'text-green-400' : 'text-red-400'}">${q.selected_answer_text || 'Not answered'}</span></p>`;
                             if (!q.is_correct) {
-                                answerHTML += `<p class="text-sm correct-answer text-blue-700 mt-1">Correct Answer: ${q.correct_answer_text}</p>`;
+                                answerHTML += `<p class="text-sm text-blue-400 mt-1">Correct Answer: ${q.correct_answer_text}</p>`;
                             }
-                            qDiv.innerHTML = `<p class="font-medium text-slate-800 mb-2">${index + 1}. ${q.question_text}</p>${answerHTML}`;
+                             if (q.explanation) {
+                                answerHTML += `<p class="text-xs text-slate-400 mt-1"><em>Explanation: ${q.explanation}</em></p>`;
+                            }
+                            qDiv.innerHTML = `<p class="font-medium text-slate-200 mb-2">${index + 1}. ${q.question_text}</p>${answerHTML}`;
                             questionsContainer.appendChild(qDiv);
                         });
-                    } else { questionsContainer.innerHTML = "<p class='text-slate-600'>No detailed question breakdown available.</p>"; }
+                    } else { questionsContainer.innerHTML = "<p class='text-slate-400'>No detailed question breakdown available.</p>"; }
                 } else {
                     document.getElementById('submission-detail-quiz-title').textContent = "Error";
-                    document.getElementById('submission-detail-summary').innerHTML = `<p class="text-red-600">Could not load details: ${result.message}</p>`;
+                    document.getElementById('submission-detail-summary').innerHTML = `<p class="text-red-400">Could not load details: ${result.message}</p>`;
                 }
             } catch (error) {
                 console.error("Error fetching submission details:", error);
                 document.getElementById('submission-detail-quiz-title').textContent = "Error";
-                document.getElementById('submission-detail-summary').innerHTML = `<p class="text-red-600">Error loading details: ${error.message}</p>`;
+                document.getElementById('submission-detail-summary').innerHTML = `<p class="text-red-400">Error loading details: ${error.message}</p>`;
             }
         }
         // Ensure the initial view is set up correctly
         document.addEventListener('DOMContentLoaded', () => {
-            toggleAuthView('login'); // Start with the login view
+            const token = localStorage.getItem('quizFlowToken');
+            if (token) {
+                showView('quizSelection');
+                loadQuizzes();
+            } else {
+                showView('login');
+            }
         });
 
     </script>
