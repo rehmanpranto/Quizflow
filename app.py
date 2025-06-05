@@ -3,12 +3,25 @@ from flask_cors import CORS
 import os
 from dotenv import load_dotenv
 from datetime import datetime, timezone
+from flask_mail import Mail, Message
 
 # Load environment variables from .env file
 load_dotenv()
 
 app = Flask(__name__, static_folder='.', static_url_path='')
 CORS(app)
+
+# --- Mail Configuration ---
+# Configure Flask-Mail with credentials from your .env file
+app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
+app.config['MAIL_PORT'] = int(os.getenv('MAIL_PORT', 587))
+app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS', 'true').lower() in ['true', '1', 't']
+app.config['MAIL_USE_SSL'] = os.getenv('MAIL_USE_SSL', 'false').lower() in ['true', '1', 't']
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER')
+
+mail = Mail(app)
 
 # Embedded quiz data
 QUIZ_DATA = {
@@ -241,6 +254,32 @@ def submit_quiz():
         }
 
         print(f"Quiz submitted by: {user_email}, Score: {score}/{total_questions}, Submission ID: {submission_id}")
+
+        # --- Send Email Notification to Admin ---
+        admin_email = os.getenv('ADMIN_EMAIL_RECIPIENT')
+        if admin_email:
+            try:
+                quiz_title = QUIZ_DATA.get("title", "Quiz")
+                subject = f"Quiz Submission: {user_email} on '{quiz_title}'"
+                body = f"""
+                A user has just completed a quiz.
+
+                User Email: {user_email}
+                Quiz Title: {quiz_title}
+                Score: {score} out of {total_questions}
+                Percentage: {percentage:.2f}%
+                Feedback: {feedback_text}
+
+                Submitted at: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}
+                """
+                msg = Message(subject, recipients=[admin_email], body=body)
+                mail.send(msg)
+                print(f"Successfully sent submission email to admin: {admin_email}")
+            except Exception as e:
+                print(f"!!! FAILED to send submission email to admin: {e}")
+        else:
+            print("!!! ADMIN_EMAIL_RECIPIENT not set in .env. Skipping email notification.")
+
 
         return jsonify({
             "success": True, "email": user_email, "submission_id": submission_id,
