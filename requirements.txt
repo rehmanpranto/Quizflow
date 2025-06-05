@@ -1,8 +1,8 @@
 Flask>=2.0.0
-gunicorn
+Flask-CORS>=3.0.0
+Werkzeug>=2.0.0
 Flask-Mail>=0.9.1
-werkzeug>=2.0.0
 python-dotenv
-psycopg2-binary
-Flask-Cors
-
+gunicorn
+pymongo[srv]
+Flask-PyMongo
